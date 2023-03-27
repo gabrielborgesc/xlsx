@@ -14,22 +14,47 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class Test {
 	
 	public static void main(String[] args) throws IOException {
+		String codigo = "300";
+		String codigo1 = "002.01";
+		String codigo2 = "002.1";
+		String codigo3 = "002.021";
+		String codigo4 = "120";
+		String codigo5 = "110";
 		
-		File file = new File("D:\\Gabriel\\Documentos\\Matérias\\Faltas\\test.xlsx");   //creating a new file instance  
-		FileInputStream fis = new FileInputStream(file);   //obtaining bytes from the file  
-		//creating Workbook instance that refers to .xlsx file  
-		XSSFWorkbook wb = new XSSFWorkbook(fis);   
-		XSSFSheet sheet = wb.getSheetAt(1);     //creating a Sheet object to retrieve object
-		System.out.println("sheet name: " + sheet.getSheetName());
-		Iterator<Row> itr = sheet.iterator();
-		Row row = itr.next();
-		Iterator<Cell> cellIterator1 = row.cellIterator();
-		Cell cell1 = cellIterator1.next();
-		row=itr.next();
-		Iterator<Cell> cellIterator2 = row.cellIterator();
-		Cell cell2 = cellIterator2.next(); 
-		System.out.println(cell1.getNumericCellValue());
-		System.out.println(cell2.getNumericCellValue());
+		System.out.println(codigo + " -> " + new Test().findCodigoPai(codigo));
+		System.out.println(codigo1 + " -> " + new Test().findCodigoPai(codigo1));
+		System.out.println(codigo2 + " -> " + new Test().findCodigoPai(codigo2));
+		System.out.println(codigo3 + " -> " + new Test().findCodigoPai(codigo3));
+		System.out.println(codigo4 + " -> " + new Test().findCodigoPai(codigo4));
+		System.out.println(codigo5 + " -> " + new Test().findCodigoPai(codigo5));
+	}
+	
+	public String findCodigoPai(String codigo) {
+		
+		String caracterPonto = ".";
+		String caracterZero = "0";
+		
+		if(!codigo.contains(caracterPonto)) {
+			String lastCharacter = String.valueOf(codigo.charAt(codigo.length() - 1));
+			if(lastCharacter.equals(caracterZero)) {
+				String substring = codigo.substring(0, codigo.length() - 2);
+				return substring + caracterZero + caracterZero;
+			}
+			String substring = codigo.substring(0, codigo.length() - 1);
+			String codigoPai = substring + caracterZero;
+			return codigoPai;
+		}
+		String substring = codigo.substring(0, codigo.length() - 1);
+		String lastCharacter = String.valueOf(substring.charAt(substring.length() - 1));
+		if(lastCharacter.equals(caracterPonto)) {
+			return substring.replace(".", "");
+		}
+		
+		if(lastCharacter.equals(caracterZero)) {
+			return substring.replace(".0", "");
+		}
+		
+		return substring;
 		
 	}
 	
